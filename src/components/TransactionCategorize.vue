@@ -14,6 +14,10 @@ const ct = computed({
     }
 }) // current transaction
 
+const getNextUncategorizedTransaction = () => {
+    return transactions.value.findIndex((t) => !Object.keys(t).includes('NecessityLevel'));
+}
+
 const handleKeydown = (e: KeyboardEvent) => {
     if (e.key === 'a') {
         ct.value = { ...ct.value, "NecessityLevel": 'Necessary' }
@@ -26,8 +30,12 @@ const handleKeydown = (e: KeyboardEvent) => {
             ci.value--;
         }
     } else if (e.key === 'ArrowRight') {
-        if (ci.value < transactions.value.length - 1) {
-            ci.value++;
+        const next = getNextUncategorizedTransaction();
+        if (next !== -1) {
+            ci.value = next;
+        } else {
+            // If no more uncategorized transactions, go to the beginning
+            ci.value = 0;
         }
     } else if (e.key === 'ArrowUp') {
         // Find current category index
