@@ -40,7 +40,7 @@ const parsingError = ref();
 const headers = ref();
 const loading = ref(false);
 
-const handleChange = (event: any) => {
+const handleChange = (_event: any) => {
     loading.value = true;
     if (!fileInput.value || !fileInput.value.files) {
         return;

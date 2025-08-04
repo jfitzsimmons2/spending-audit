@@ -30,13 +30,16 @@ const handleKeydown = (e: KeyboardEvent) => {
             ci.value--;
         }
     } else if (e.key === 'ArrowRight') {
-        const next = getNextUncategorizedTransaction();
-        if (next !== -1) {
-            ci.value = next;
-        } else {
-            // If no more uncategorized transactions, go to the beginning
-            ci.value = 0;
+        if (ci.value < transactions.value.length - 1) {
+            ci.value++;
         }
+    } else if (e.key === 'Enter') {
+        // Move to the next transaction
+        const nextIndex = getNextUncategorizedTransaction();
+        if (nextIndex !== -1) {
+            ci.value = nextIndex;
+        }
+
     } else if (e.key === 'ArrowUp') {
         // Find current category index
         const currentCategoryIndex = categories.value.indexOf(ct.value['Category']);
@@ -137,6 +140,7 @@ const remainingTransactions = computed(() => {
         <div class="flex gap-8 justify-between items-center">
             <strong>{{ ci + 1 }} / {{ transactions.length }} transactions ({{ remainingTransactions.length }}
                 remaining)</strong>
+            <button @click="getNextUncategorizedTransaction">Find next uncategorized transaction</button>
 
             <div class="flex gap-4">
                 <div>
